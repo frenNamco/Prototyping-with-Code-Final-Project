@@ -1,40 +1,53 @@
-let video 
-let handPose;
-let hands = [];
+class HandTracker {
+  constructor() {
+    this.hands = [];
+    this.handPose = null;
+    this.video = null;
+  }
+
+  preload() {
+    this.handPose = ml5.handPose({ flipped: true });
+  }
+
+  setup(w, h) {
+    this.video = createCapture(VIDEO, { flipped: true });
+    this.video.size(w, h);
+    this.video.hide();
+    // Arrow function preserves `this` context
+    this.handPose.detectStart(this.video, (results) => {
+      this.hands = results;
+    });
+  }
+
+  draw() {
+    if (this.hands.length > 0) {
+      for (let hand of this.hands) {
+        if (hand.confidence > 0.01) {
+          for (let kp of hand.keypoints) {
+            fill(255, 0, 255);
+            noStroke();
+            circle(kp.x, kp.y, 10);
+          }
+        }
+      }
+    }
+  }
+}
+
+let tracker;
 
 function preload() {
-  handPose = ml5.handPose({flipped:true});
-}
-
-function mousePressed() {
-  console.log(hands);
-}
-
-function gotHands(results) {
-  hands = results;
+  tracker = new HandTracker();
+  tracker.preload();
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  video = createCapture(VIDEO, {flipped:true});
-  video.hide();
-  handPose.detectStart(video, gotHands);
+  tracker.setup(width * 0.1, height * 0.1);
 }
 
 function draw() {
-  image(video, 0, 0);
-  if (hands.length > 0) {
-    for (let hand of hands) {
-      if (hand.confidence > 0.1) {
-        for (let i = 0; i < hand.keypoints.length; i++) {
-          let keypoint = hand.keypoints[i];
-          fill(255, 0, 255);
-          noStroke();
-          circle(keypoint.x, keypoint.y, 16);
-        }
-      }
-    }
-
-  }
-
+  background(220);
+  image(tracker.video, 0, 0, 0.1 * width, 0.1 * height);
+  tracker.draw();
 }
