@@ -57,22 +57,35 @@ class Cursor {
     this.radius = 20;
     this.color = "red"
 
-    this.indexKeypointY = null;
+    this.indexKeypoint = null;
     this.indexKeypointX = null;
     this.indexKeypointY = null;
 
+    this.thumbKeypoint = null;
+    this.thumbKeypointX = null;
+    this.thumbKeypointY = null;
+
+    this.click = false;
   }
 
   updateCursor(tracker) {
     if (tracker.hands[0] != undefined) {
       this.indexKeypoint = tracker.hands[0].keypoints[8];
-      this.keypointX = this.indexKeypoint.x;
-      this.keypointY = this.indexKeypoint.y;
+      this.thumbKeypoint = tracker.hands[0].keypoints[4];
 
-      this.x = map(this.keypointX, 0, tracker.videoWidth, 0, width);
-      this.y = map(this.keypointY, 0, tracker.videoHeight, 0, height);
+      this.indexKeypointX = this.indexKeypoint.x;
+      this.indexKeypointY = this.indexKeypoint.y;
+      this.thumbKeypointX = this.thumbKeypoint.x;
+      this.thumbKeypointY = this.thumbKeypoint.y;
+
+      let midDistanceX = (this.indexKeypointX + this.thumbKeypointX) / 2;
+      let midDistanceY = (this.indexKeypointY + this.thumbKeypointY) / 2; 
+
+      this.x = map(midDistanceX, 0, tracker.videoWidth, 0, width);
+      this.y = map(midDistanceY, 0, tracker.videoHeight, 0, height);
     } else {
-      
+      this.x = mouseX;
+      this.y = mouseY;
     }
   }
 
@@ -81,8 +94,25 @@ class Cursor {
     noStroke();
     circle(this.x, this.y, this.radius);
   }
-}
 
+  checkClick(tracker) {
+    if (tracker.hands[0] != undefined) {
+      let fingerDistance = dist(this.indexKeypointX, this.indexKeypointY, this.thumbKeypointX, this.thumbKeypointY);
+    
+      if (fingerDistance < 8) {
+        this.color = "green";
+        this.click = true;
+      } else {
+        this.color = "red";
+        this.click = false;
+      }
+    }
+  }
+};
+
+class Canvas {
+
+};
 
 
 let tracker;
@@ -105,6 +135,10 @@ function draw() {
   tracker.drawKeypoints();
 
   cursor.updateCursor(tracker);
-  console.log(cursor.x);
+  cursor.checkClick(tracker);
   cursor.drawCursor();
+
+  if (cursor.click) {
+    
+  }
 }
