@@ -19,10 +19,12 @@ class Cursor {
 
     this.click = false;
     this.withinCanvas = false;
+
+    this.mode = "hand";
   }
 
   updateCursor(tracker) {
-    if (tracker.hands[0] != undefined) {
+    if (tracker.hands[0] != undefined && this.mode == "hand") {
       this.indexKeypoint = tracker.hands[0].keypoints[8];
       this.thumbKeypoint = tracker.hands[0].keypoints[4];
 
@@ -36,7 +38,7 @@ class Cursor {
 
       this.x = map(midDistanceX, 0, tracker.videoWidth, 0, width);
       this.y = map(midDistanceY, 0, tracker.videoHeight, 0, height);
-    } else {
+    } else if (this.mode == "mouse") {
       this.x = mouseX;
       this.y = mouseY;
     }
@@ -50,16 +52,16 @@ class Cursor {
   }
 
   checkClick(tracker) {
-    if (tracker.hands[0] != undefined) {
+    if (tracker.hands[0] != undefined && this.mode == "hand") {
       let fingerDistance = dist(this.indexKeypointX, this.indexKeypointY, this.thumbKeypointX, this.thumbKeypointY);
-      if (fingerDistance < 10) {
+      if (fingerDistance < 13) {
         this.color = "green";
         this.click = true;
       } else {
         this.color = "red";
         this.click = false;
       }
-    } else if (mouseIsPressed && mouseButton == LEFT) {
+    } else if (mouseIsPressed && mouseButton == LEFT && this.mode == "mouse") {
       this.color = "green";
       this.click = true;
     } else {
@@ -77,7 +79,7 @@ class Cursor {
   }
 
   draw(canvas) {
-    if (this.click && this.withinCanvas) {
+    if (this.click && this.withinCanvas && this.px != null) {
       canvas.painting.fill(this.drawColor);
       canvas.painting.strokeWeight(8);
       canvas.painting.line(this.px, this.py, this.x, this.y);
