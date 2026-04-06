@@ -1,0 +1,17 @@
+class Canvas {
+  constructor(tracker, w, h) {
+    this.x = tracker.videoWidth;
+    this.y = 0;
+    
+    this.width = w * 0.8;
+    this.height = h;
+    this.painting = createGraphics(w, h);
+    this.color = "white";
+  }
+
+  drawCanvas() {
+    fill(this.color);
+    rect(this.x, this.y, this.width, this.height);
+    image(this.painting, 0, 0);
+  }
+};
