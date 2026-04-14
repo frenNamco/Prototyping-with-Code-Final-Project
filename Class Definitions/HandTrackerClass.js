@@ -34,7 +34,7 @@ class HandTracker {
     });
   }
 
-  drawKeypoints() {
+  drawKeypoints(screen) {
     if (this.hands.length > 0) {
       this.currentHand = this.hands[0];
       if (this.currentHand.confidence > 0.1) {
@@ -42,6 +42,7 @@ class HandTracker {
         if (this.smoothed.length === 0) {
           this.smoothed = this.currentHand.keypoints.map(kp => ({ x: kp.x, y: kp.y }));
         }
+
 
         for (let i = 0; i < this.currentHand.keypoints.length; i++) {
           let kp = this.currentHand.keypoints[i];
@@ -52,7 +53,7 @@ class HandTracker {
           let sx = this.smoothed[i].x;
           let sy = this.smoothed[i].y;
 
-          noStroke();
+          screen.noStroke();
           if (i === 8 || i === 4) {
             if (i === 8) {
               this.avgIndexX = sx;
@@ -61,11 +62,11 @@ class HandTracker {
               this.avgThumbX = sx;
               this.avgThumbY = sy;
             }
-            fill(0, 255, 0);
+            screen.fill(0, 255, 0);
           } else {
-            fill(255, 0, 255);
+            screen.fill(255, 0, 255);
           }
-          circle(sx, sy, this.keyPointRadius);
+          screen.circle(sx, sy, this.keyPointRadius);
         }
       }
     }

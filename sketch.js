@@ -1,6 +1,7 @@
 let tracker;
 let cursor;
 let canvas;
+let screen;
 
 function preload() {
   tracker = new HandTracker();
@@ -13,21 +14,28 @@ function setup() {
   tracker.setup(width, height);
 
   canvas = new Canvas(tracker, width, height);
-
+  screen = new Screen(tracker, cursor, canvas);
 }
 
 function draw() {
-  background(220);
-  image(tracker.video, 0, 0, tracker.videoWidth, tracker.videoHeight);
-  tracker.drawKeypoints();
+  screen.displayCurrentScreen();
+  
+  if (mouseIsPressed) {
+    screen.currentScreen = "drawing mode";
+  }
 
-  cursor.updateCursor(tracker);
-  cursor.checkClick(tracker);
-  cursor.checkLocation(canvas);
+
+  // background(220);
+  // image(tracker.video, 0, 0, tracker.videoWidth, tracker.videoHeight);
+  // tracker.drawKeypoints();
+
+  // cursor.updateCursor(tracker);
+  // cursor.checkClick(tracker);
+  // cursor.checkLocation(canvas);
 
   
-  canvas.drawCanvas();
-  cursor.draw(canvas);
-  cursor.drawCursor();
+  // canvas.drawCanvas();
+  // cursor.draw(canvas);
+  // cursor.drawCursor();
 
 }

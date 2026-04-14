@@ -45,10 +45,10 @@ class Cursor {
 
   }
 
-  drawCursor() {
-    fill(this.color);
-    noStroke();
-    circle(this.x, this.y, this.radius);
+  drawCursor(screen) {
+    screen.fill(this.color);
+    screen.noStroke();
+    screen.circle(this.x, this.y, this.radius);
   }
 
   checkClick(tracker) {

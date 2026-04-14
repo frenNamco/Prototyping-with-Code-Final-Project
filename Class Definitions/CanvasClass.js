@@ -9,9 +9,9 @@ class Canvas {
     this.color = "white";
   }
 
-  drawCanvas() {
-    fill(this.color);
-    rect(this.x, this.y, this.width, this.height);
-    image(this.painting, 0, 0);
+  drawCanvas(screen) {
+    screen.fill(this.color);
+    screen.rect(this.x, this.y, this.width, this.height);
+    screen.image(this.painting, 0, 0);
   }
 };
