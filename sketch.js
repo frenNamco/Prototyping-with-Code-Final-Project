@@ -3,10 +3,14 @@ let cursor;
 let canvas;
 let screen;
 
+let mainBackground;
+
 function preload() {
   tracker = new HandTracker();
   cursor = new Cursor();
   tracker.preload();
+
+  mainBackground = loadImage("/Assets/Main Screen/Main_Background.png");
 }
 
 function setup() {
@@ -14,7 +18,7 @@ function setup() {
   tracker.setup(width, height);
 
   canvas = new Canvas(tracker, width, height);
-  screen = new Screen(tracker, cursor, canvas);
+  screen = new Screen(tracker, cursor, canvas, mainBackground);
 }
 
 function draw() {
