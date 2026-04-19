@@ -25,7 +25,7 @@ function draw() {
   screen.displayCurrentScreen();
   
   if (mouseIsPressed) {
-    screen.currentScreen = "drawing mode";
+    screen.changeCurrentScreen("drawing mode");
   }
 
 

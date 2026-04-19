@@ -20,8 +20,16 @@ class Screen {
     }
 
     changeCurrentScreen(screen) {
-        this.previousScreen = this.currentScreen;
-        this.currentScreen = screen;
+        console.log(this.previousScreen != this.currentScreen);
+        console.log(this.currentScreen);
+        console.log(this.previousScreen);
+
+        if (this.currentScreen != screen) {
+            this.previousScreen = this.currentScreen;
+            this.currentScreen = screen;
+        }
+
+        
     }
 
     displayCurrentScreen() {
@@ -32,11 +40,13 @@ class Screen {
             background("black");
             this.cameraState = true;
 
+            console.log(this.currentScreen);
+            console.log(this.previousScreen);
 
             if (this.currentScreen == "main" && this.previousScreen == null) {
                 this.drawMainScreen("down");
-            } else if (this.currentScreen == "drawing mode") {
-                this.drawDrawingModeScreen();
+            } else if (this.currentScreen == "drawing mode" && this.previousScreen == "main") {
+                this.drawDrawingModeScreen("main_up");
             } else {
                 console.log("No screen displaying right now");
             }
@@ -62,7 +72,7 @@ class Screen {
         }
     }
 
-    drawDrawingModeScreen() {
+    drawDrawingModeScreen(transitionState) {
         this.drawingScreen.background(220);
         this.drawingScreen.image(this.handtracker.video, 0, 0, this.handtracker.videoWidth, this.handtracker.videoHeight);
         this.handtracker.drawKeypoints(this.drawingScreen);
@@ -76,17 +86,32 @@ class Screen {
         this.cursor.draw(this.canvas);
         this.cursor.drawCursor(this.drawingScreen);
         image(this.drawingScreen, 0, 0);
+
+        if (transitionState == "main_up") {
+            this.transitionUp(this.mainScreen, 15);
+        }
     }
 
-    transitionUp() {
+    transitionUp(screen, speed) {
+        let yVel = speed;
+        console.log(this.currentScreenY);
+        image(screen, this.currentScreenY);
 
+        if (this.currentScreenY > 0 - height) {
+            this.currentScreenY -= yVel;
+        } else if (this.currentScreenY < 0 - height) {
+            this.currentScreenY
+        }
     }
 
     transitionDown(screen, speed) {
         let yVel = speed;
         image(screen, 0, this.currentScreenY);
-        if (this.currentScreenY <= 0) {
+
+        if (this.currentScreenY < 0) {
             this.currentScreenY += yVel;
+        } else if (this.currentScreenY > 0) {
+            this.currentScreenY = 0;
         }
     }
 };
