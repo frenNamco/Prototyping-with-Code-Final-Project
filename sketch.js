@@ -33,23 +33,4 @@ function setup() {
 
 function draw() {
   screen.displayCurrentScreen();
-  
-  // if (mouseIsPressed) {
-  //   screen.changeCurrentScreen("drawing mode");
-  // }
-
-
-  // background(220);
-  // image(tracker.video, 0, 0, tracker.videoWidth, tracker.videoHeight);
-  // tracker.drawKeypoints();
-
-  // cursor.updateCursor(tracker);
-  // cursor.checkClick(tracker);
-  // cursor.checkLocation(canvas);
-
-  
-  // canvas.drawCanvas();
-  // cursor.draw(canvas);
-  // cursor.drawCursor();
-
 }

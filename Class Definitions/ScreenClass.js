@@ -92,7 +92,7 @@ class Screen {
         this.canvas.drawCanvas(this.drawingScreen);
         this.cursor.draw(this.canvas);
         this.cursor.drawCursor(this.drawingScreen);
-        image(this.drawingScreen, 0, 0);
+        image(this.drawingScreen, 0, 0);    
 
         if (transitionState == "main_up") {
             this.transitionUp(this.mainScreen, 15);
@@ -101,7 +101,6 @@ class Screen {
 
     transitionUp(screen, speed) {
         let yVel = speed;
-        console.log(this.currentScreenY);
         image(screen, 0, this.currentScreenY);
 
         if (this.currentScreenY > 0 - height) {
