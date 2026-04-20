@@ -1,5 +1,5 @@
 class Screen {
-    constructor(tracker, cursor, canvas, mainBg) {
+    constructor(tracker, cursor, canvas) {
         this.currentScreen = "main";
         this.previousScreen = null;
 
@@ -13,23 +13,20 @@ class Screen {
 
         this.cameraState = false;
 
-        this.mainBackground = mainBg;
+        this.mainBackground = null;
 
         this.transitionDownStartY = 0 - height;
         this.currentScreenY = this.transitionDownStartY;
+
+        this.startButton = null;
     }
 
     changeCurrentScreen(screen) {
-        console.log(this.previousScreen != this.currentScreen);
-        console.log(this.currentScreen);
-        console.log(this.previousScreen);
-
         if (this.currentScreen != screen) {
             this.previousScreen = this.currentScreen;
             this.currentScreen = screen;
         }
 
-        
     }
 
     displayCurrentScreen() {
@@ -39,9 +36,6 @@ class Screen {
         } else {
             background("black");
             this.cameraState = true;
-
-            console.log(this.currentScreen);
-            console.log(this.previousScreen);
 
             if (this.currentScreen == "main" && this.previousScreen == null) {
                 this.drawMainScreen("down");
@@ -64,6 +58,19 @@ class Screen {
 
     drawMainScreen(transitionState) {
         this.mainScreen.image(this.mainBackground, 0, 0, width, height);
+
+        this.startButton.drawButton(this.mainScreen, width/2, height * (3/4));
+
+        if (this.startButton.checkMouseInButton()) {
+            this.startButton.drawButtonSelected(this.mainScreen);
+
+            if (this.startButton.checkClick()) {
+                this.changeCurrentScreen("drawing mode");
+            }
+
+        } else {
+            this.startButton.uninvertButton(this.mainScreen);
+        }
         
         if (transitionState == "up") {
             
@@ -95,7 +102,7 @@ class Screen {
     transitionUp(screen, speed) {
         let yVel = speed;
         console.log(this.currentScreenY);
-        image(screen, this.currentScreenY);
+        image(screen, 0, this.currentScreenY);
 
         if (this.currentScreenY > 0 - height) {
             this.currentScreenY -= yVel;
@@ -113,5 +120,13 @@ class Screen {
         } else if (this.currentScreenY > 0) {
             this.currentScreenY = 0;
         }
+    }
+
+    loadBackgroundImage(bckGndImg) {
+        this.mainBackground = bckGndImg;
+    }
+
+    loadButtons(start) {
+        this.startButton = start;
     }
 };

@@ -4,6 +4,9 @@ let canvas;
 let screen;
 
 let mainBackground;
+let startButtonImage;
+
+let startButton;
 
 function preload() {
   tracker = new HandTracker();
@@ -11,6 +14,7 @@ function preload() {
   tracker.preload();
 
   mainBackground = loadImage("/Assets/Main Screen/Main_Background.png");
+  startButtonImage = loadImage("/Assets/Main Screen/Main_Button.png");
 }
 
 function setup() {
@@ -18,15 +22,21 @@ function setup() {
   tracker.setup(width, height);
 
   canvas = new Canvas(tracker, width, height);
-  screen = new Screen(tracker, cursor, canvas, mainBackground);
+  screen = new Screen(tracker, cursor, canvas);
+
+  startButton = new StartButton(startButtonImage);
+
+  screen.loadBackgroundImage(mainBackground);
+  screen.loadButtons(startButton);
+
 }
 
 function draw() {
   screen.displayCurrentScreen();
   
-  if (mouseIsPressed) {
-    screen.changeCurrentScreen("drawing mode");
-  }
+  // if (mouseIsPressed) {
+  //   screen.changeCurrentScreen("drawing mode");
+  // }
 
 
   // background(220);
