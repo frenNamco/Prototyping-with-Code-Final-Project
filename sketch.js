@@ -15,8 +15,8 @@ function preload() {
   tracker = new HandTracker();
   tracker.preload();
   
-  mainBackground = loadImage("/Assets/Main_Screen/Main_Background.png");
-  startButtonImage = loadImage("/Assets/Main_Screen/Main_Button.png");
+  mainBackground = loadImage("Assets/Main_Screen/Main_Background.png");
+  startButtonImage = loadImage("Assets/Main_Screen/Main_Button.png");
   canOutline = loadImage("Assets/Drawing_Screen/Spray_Paint_Can_Outline.png");
   canBackground = loadImage("Assets/Drawing_Screen/Spray_Paint_Can_Background.png");
   paintSplash = loadImage("Assets/Drawing_Screen/Paint_Splash.png");
