@@ -23,7 +23,7 @@ class Cursor {
     this.paintSplashWidth = 50;
     this.paintSplashHeight = 50;
 
-    this.mode = "hand";
+    this.mode = "mouse";
   }
 
   updateCursor(tracker) {
@@ -86,12 +86,16 @@ class Cursor {
     }
   }
 
-  draw(canvas) {
+  draw(screen, canvas) {
     if (this.click && this.withinCanvas) {
+      canvas.painting.fill(this.drawColor);
+      canvas.painting.noStroke();
+      canvas.painting.circle(this.x, this.y, 20);
       // canvas.painting.tint(this.drawColor);
-      // canvas.painting.image(this.paintSplash, this.x - this.paintSplashWidth/2 - canvas.x, this.y - this.paintSplashHeight/2 - canvas.y, this.paintSplashWidth, this.paintSplashHeight);
+      // canvas.painting.image(this.paintSplash, this.x - this.paintSplashWidth/2, this.y - this.paintSplashHeight/2, this.paintSplashWidth, this.paintSplashHeight);
       // canvas.painting.noTint();
     }
 
+    screen.image(canvas.painting, 0, 0);
   }
 };

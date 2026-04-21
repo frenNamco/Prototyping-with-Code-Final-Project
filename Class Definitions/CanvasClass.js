@@ -4,7 +4,7 @@ class Canvas {
     this.height = h * 0.75;
     this.x = width/2 - this.width/2;
     this.y = tracker.videoHeight;
-    this.painting = createGraphics(this.width, this.height);
+    this.painting = createGraphics(w, h);
     this.color = "white";
   }
 
@@ -12,6 +12,6 @@ class Canvas {
     screen.noStroke();
     screen.fill(this.color);
     screen.rect(this.x, this.y, this.width, this.height);
-    screen.image(this.painting, this.x, this.y);
+    screen.image(this.painting, 0, 0);
   }
 };

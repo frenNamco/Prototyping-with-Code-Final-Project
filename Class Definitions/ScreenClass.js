@@ -88,10 +88,10 @@ class Screen {
         this.cursor.checkClick(this.handtracker);
         this.cursor.checkLocation(this.canvas);
         
+        
+        this.cursor.draw(this.drawingScreen, this.canvas);
         this.canvas.drawCanvas(this.drawingScreen);
-
         this.cursor.drawCursor(this.drawingScreen, width/20, height/10);
-        this.cursor.draw(this.canvas);
         
         image(this.drawingScreen, 0, 0);    
         
