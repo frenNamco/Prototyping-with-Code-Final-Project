@@ -40,5 +40,4 @@ function setup() {
 
 function draw() {
   screen.displayCurrentScreen();
-  
 }
