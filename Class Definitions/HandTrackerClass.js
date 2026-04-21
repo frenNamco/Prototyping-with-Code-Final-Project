@@ -5,6 +5,7 @@ class HandTracker {
     this.videoHeight = null;
     this.widthMod = 0.15;
     this.heightMod = 0.15;
+    this.videoX = null;
 
     this.hands = [];
     this.handPose = null;
@@ -26,6 +27,7 @@ class HandTracker {
   setup(w, h) {
     this.videoWidth = w * this.widthMod;
     this.videoHeight = h * this.heightMod;
+    this.videoX = (width/2) - (this.videoWidth/2);
     this.video = createCapture(VIDEO, { flipped: true });
     this.video.size(this.videoWidth, this.videoHeight);
     this.video.hide();
@@ -50,7 +52,7 @@ class HandTracker {
           this.smoothed[i].x = lerp(kp.x, this.smoothed[i].x, this.smoothing);
           this.smoothed[i].y = lerp(kp.y, this.smoothed[i].y, this.smoothing);
 
-          let sx = this.smoothed[i].x;
+          let sx = this.smoothed[i].x + this.videoX;
           let sy = this.smoothed[i].y;
 
           screen.noStroke();

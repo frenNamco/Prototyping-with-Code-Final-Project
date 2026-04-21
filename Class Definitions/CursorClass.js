@@ -1,13 +1,10 @@
 class Cursor {
-  constructor() {
+  constructor(canOutline, canBackground, paintSplash) {
     this.x = null;
     this.y = null;
-    this.px = null;
-    this.py = null;
 
-    this.radius = 20;
     this.color = "red";
-    this.drawColor = "black";
+    this.drawColor = "red";
 
     this.indexKeypoint = null;
     this.indexKeypointX = null;
@@ -19,6 +16,12 @@ class Cursor {
 
     this.click = false;
     this.withinCanvas = false;
+
+    this.paintCanOutline = canOutline;
+    this.paintCanBackground = canBackground;
+    this.paintSplash = paintSplash
+    this.paintSplashWidth = 50;
+    this.paintSplashHeight = 50;
 
     this.mode = "hand";
   }
@@ -36,7 +39,8 @@ class Cursor {
       let midDistanceX = (this.indexKeypointX + this.thumbKeypointX) / 2;
       let midDistanceY = (this.indexKeypointY + this.thumbKeypointY) / 2; 
 
-      this.x = map(midDistanceX, 0, tracker.videoWidth, 0, width);
+
+      this.x = map(midDistanceX, tracker.videoX, tracker.videoX + tracker.videoWidth, 0, width);
       this.y = map(midDistanceY, 0, tracker.videoHeight, 0, height);
     } else if (this.mode == "mouse") {
       this.x = mouseX;
@@ -45,10 +49,14 @@ class Cursor {
 
   }
 
-  drawCursor(screen) {
-    screen.fill(this.color);
-    screen.noStroke();
-    screen.circle(this.x, this.y, this.radius);
+  drawCursor(screen, w, h) {
+    if (this.withinCanvas) {
+      screen.image(this.paintCanOutline, this.x - w/2, this.y, w, h);
+      screen.tint(this.drawColor);
+      screen.image(this.paintCanBackground, this.x - w/2, this.y, w, h);
+      screen.noTint();
+    }
+
   }
 
   checkClick(tracker) {
@@ -71,7 +79,7 @@ class Cursor {
   }
 
   checkLocation(canvas) {
-    if (this.x < width && this.x > canvas.x && this.y < height && this.y > 0) {
+    if (this.x < (canvas.x + canvas.width) && this.x > canvas.x && this.y < (canvas.y + canvas.height) && this.y > canvas.y) {
       this.withinCanvas = true;
     } else {
       this.withinCanvas = false;
@@ -79,14 +87,11 @@ class Cursor {
   }
 
   draw(canvas) {
-    if (this.click && this.withinCanvas && this.px != null) {
-      canvas.painting.fill(this.drawColor);
-      canvas.painting.strokeWeight(8);
-      canvas.painting.line(this.px, this.py, this.x, this.y);
+    if (this.click && this.withinCanvas) {
+      // canvas.painting.tint(this.drawColor);
+      // canvas.painting.image(this.paintSplash, this.x - this.paintSplashWidth/2 - canvas.x, this.y - this.paintSplashHeight/2 - canvas.y, this.paintSplashWidth, this.paintSplashHeight);
+      // canvas.painting.noTint();
     }
 
-    this.px = this.x;
-    this.py = this.y;
-    image(canvas.painting, 0, 0);
   }
 };

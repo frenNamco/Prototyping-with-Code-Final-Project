@@ -81,19 +81,20 @@ class Screen {
 
     drawDrawingModeScreen(transitionState) {
         this.drawingScreen.background(220);
-        this.drawingScreen.image(this.handtracker.video, 0, 0, this.handtracker.videoWidth, this.handtracker.videoHeight);
+        this.drawingScreen.image(this.handtracker.video, (width/2) - (this.handtracker.videoWidth/2), 0, this.handtracker.videoWidth, this.handtracker.videoHeight);
         this.handtracker.drawKeypoints(this.drawingScreen);
-
+        
         this.cursor.updateCursor(this.handtracker);
         this.cursor.checkClick(this.handtracker);
         this.cursor.checkLocation(this.canvas);
-
-
+        
         this.canvas.drawCanvas(this.drawingScreen);
-        this.cursor.draw(this.canvas);
-        this.cursor.drawCursor(this.drawingScreen);
-        image(this.drawingScreen, 0, 0);    
 
+        this.cursor.drawCursor(this.drawingScreen, width/20, height/10);
+        this.cursor.draw(this.canvas);
+        
+        image(this.drawingScreen, 0, 0);    
+        
         if (transitionState == "main_up") {
             this.transitionUp(this.mainScreen, 15);
         }
@@ -106,7 +107,7 @@ class Screen {
         if (this.currentScreenY > 0 - height) {
             this.currentScreenY -= yVel;
         } else if (this.currentScreenY < 0 - height) {
-            this.currentScreenY
+            this.currentScreenY = 0 - height;
         }
     }
 
