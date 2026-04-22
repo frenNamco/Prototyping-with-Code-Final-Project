@@ -33,6 +33,7 @@ let saveButton;
 let clearButton;
 
 let spraySound;
+let backgroundMusic;
 
 function preload() {
   	tracker = new HandTracker();
@@ -56,6 +57,7 @@ function preload() {
     tutorialImage5 = loadImage("Assets/Tutorial_Screen/Tutorial5.png");
 
     spraySound = loadSound("Assets/Drawing_Screen/Spray.mp3");
+    backgroundMusic = loadSound("Assets/Humming_The_Bassline.mp3");
 
 	cursor = new Cursor(canOutline, canBackground, spraySound, paintSplash);
 }
@@ -86,7 +88,7 @@ function setup() {
     screen.loadDOMElements(colorPicker, radiusSlider, modeSwitchButton, saveButton, clearButton);
     screen.loadTutorialImages(tutorialImage1, tutorialImage2, tutorialImage3, tutorialImage4, tutorialImage5);
     
-    
+    screen.loadMusic(backgroundMusic);
 }
 
 function draw() {

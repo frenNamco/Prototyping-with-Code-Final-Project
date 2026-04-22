@@ -28,7 +28,7 @@ class Cursor {
 
     this.drips = [];
 
-    this.mode = "mouse";
+    this.mode = "hand";
   }
 
   updateCursor(tracker) {

@@ -19,7 +19,7 @@ class Screen {
 
         this.transitionDownStartY = 0 - height;
         this.currentScreenY = this.transitionDownStartY;
-        this.transitionSpeed = 15;
+        this.transitionSpeed = 25;
 
         this.startButton = null;
         this.settingsButton = null;
@@ -53,6 +53,8 @@ class Screen {
         this.tutorialCounter = 0;
 
         this.nextButton = null;
+
+        this.backgroundMusic = null;
         
     }
 
@@ -71,6 +73,8 @@ class Screen {
         if (!this.handtracker.video.loadedmetadata) {
             this.drawLoadingScreen();
         } else {
+            this.backgroundMusic.playMode('untilDone');
+            this.backgroundMusic.play();
             this.cameraState = true;
 
             if (this.currentScreen == "main" && this.previousScreen == null) {
@@ -329,5 +333,9 @@ class Screen {
 
     loadTutorialImages(t1, t2, t3, t4, t5) {
         this.tutorialImages = [t1, t2, t3, t4, t5];
+    }
+
+    loadMusic(m) {
+        this.backgroundMusic = m;
     }
 };
