@@ -2,50 +2,36 @@ class Button {
     constructor(image) {
         this.asset = image;
 
-        this.x;
-        this.y;
-
-    }
-
-    drawButton(screen, x, y) {
-        this.x = x;
-        this.y = y;
-
-        screen.image(this.asset, x - (this.asset.width/4), y, this.asset.width/2, this.asset.height/2);
-    }
-
-    checkMouseInButton() {
-        if (mouseX > this.x - (this.asset.width/4) && mouseX < (this.x + this.asset.width/4) && mouseY > this.y && mouseY < (this.y + this.asset.height/2)) {
-            return true;
-        }
-    
-        return false;
-    }
-
-    checkClick() {
-        if (this.checkMouseInButton() && mouseIsPressed) {
-            return true;
-        }
-
-        return false;
-    }
-}
-
-class StartButton extends Button {
-    constructor(image) {
-        super(image);
+        this.x = null;
+        this.y = null;
+        this.w = null;
+        this.h = null;
 
         this.inverted = false;
     }
 
+    drawButton(screen, x, y, w, h) {
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+
+        screen.image(this.asset, this.x - this.w/2, this.y, this.w, this.h);
+    }
+
+    checkMouseInButton() {
+        if (mouseX > this.x - this.w/2 && mouseX < (this.x + this.w/2) && mouseY > this.y && mouseY < (this.y + this.h)) {
+            return true;
+        }
+        return false;
+    }
+
     drawButtonSelected(screen) {
-        
         if (!this.inverted) {
             this.asset.filter(INVERT);
             this.inverted = true;
         }
-
-        this.drawButton(screen, this.x, this.y);
+        this.drawButton(screen, this.x, this.y, this.w, this.h);
     }
 
     uninvertButton(screen) {
@@ -53,7 +39,7 @@ class StartButton extends Button {
             this.asset.filter(INVERT);
             this.inverted = false;
         }
-
-        this.drawButton(screen, this.x, this.y);
+        this.drawButton(screen, this.x, this.y, this.w, this.h);
     }
+
 }

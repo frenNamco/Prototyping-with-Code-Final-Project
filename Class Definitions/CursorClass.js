@@ -1,10 +1,11 @@
 class Cursor {
-  constructor(canOutline, canBackground, paintSplash) {
+  constructor(canOutline, canBackground, spraySound, paintSplash) {
     this.x = null;
     this.y = null;
 
     this.color = "red";
-    this.drawColor = "red";
+    this.drawColor = "black";
+    this.drawRadius = 20;
 
     this.indexKeypoint = null;
     this.indexKeypointX = null;
@@ -22,6 +23,8 @@ class Cursor {
     this.paintSplash = paintSplash
     this.paintSplashWidth = 50;
     this.paintSplashHeight = 50;
+
+    this.spraySound = spraySound;
 
     this.mode = "mouse";
   }
@@ -90,11 +93,16 @@ class Cursor {
     if (this.click && this.withinCanvas) {
       canvas.painting.fill(this.drawColor);
       canvas.painting.noStroke();
-      canvas.painting.circle(this.x, this.y, 20);
+      canvas.painting.circle(this.x, this.y, this.drawRadius);
       // canvas.painting.tint(this.drawColor);
       // canvas.painting.image(this.paintSplash, this.x - this.paintSplashWidth/2, this.y - this.paintSplashHeight/2, this.paintSplashWidth, this.paintSplashHeight);
       // canvas.painting.noTint();
+      this.spraySound.playMode('untilDone');
+      this.spraySound.play();
+    } else {
+      this.spraySound.stop();
     }
+
 
     screen.image(canvas.painting, 0, 0);
   }

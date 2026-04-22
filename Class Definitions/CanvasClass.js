@@ -14,4 +14,8 @@ class Canvas {
     screen.rect(this.x, this.y, this.width, this.height);
     screen.image(this.painting, 0, 0);
   }
+
+  clearCanvas() {
+    this.painting.clear();
+  }
 };
