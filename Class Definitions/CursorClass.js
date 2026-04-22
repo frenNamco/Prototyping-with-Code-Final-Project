@@ -67,7 +67,7 @@ class Cursor {
   checkClick(tracker) {
     if (tracker.hands[0] != undefined && this.mode == "hand") {
       let fingerDistance = dist(this.indexKeypointX, this.indexKeypointY, this.thumbKeypointX, this.thumbKeypointY);
-      if (fingerDistance < 13) {
+      if (fingerDistance < 10) {
         this.color = "green";
         this.click = true;
       } else {
