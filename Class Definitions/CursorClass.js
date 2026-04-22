@@ -26,6 +26,8 @@ class Cursor {
 
     this.spraySound = spraySound;
 
+    this.drips = [];
+
     this.mode = "mouse";
   }
 
@@ -89,20 +91,51 @@ class Cursor {
     }
   }
 
+  sprayPaint(canvas, x, y, radius, density, col) {
+    for (let i = 0; i < density; i++) {
+      let angle = random(TWO_PI);
+      let r = randomGaussian(0, radius / 3);
+      let sx = x + cos(angle) * r;
+      let sy = y + sin(angle) * r;
+      canvas.painting.noStroke();
+      canvas.painting.fill(red(col), green(col), blue(col), random(100, 200));
+      canvas.painting.circle(sx, sy, random(1, 3));
+    }
+}
+
   draw(screen, canvas) {
     if (this.click && this.withinCanvas) {
-      canvas.painting.fill(this.drawColor);
-      canvas.painting.noStroke();
-      canvas.painting.circle(this.x, this.y, this.drawRadius);
-      // canvas.painting.tint(this.drawColor);
-      // canvas.painting.image(this.paintSplash, this.x - this.paintSplashWidth/2, this.y - this.paintSplashHeight/2, this.paintSplashWidth, this.paintSplashHeight);
-      // canvas.painting.noTint();
+      let col = color(this.drawColor);
+      let density = floor(this.drawRadius * this.drawRadius * 0.1);
+      this.sprayPaint(canvas, this.x, this.y, this.drawRadius, density, col);
+
+      // occasionally spawn a drip
+      if (random() < 0.02) {
+        this.drips.push({
+          x: this.x,
+          y: this.y,
+          speed: random(0.3, 1.2),
+          col: col,
+          len: 0,
+          maxLen: random(20, 80)
+        });
+      }
+
       this.spraySound.playMode('untilDone');
       this.spraySound.play();
     } else {
       this.spraySound.stop();
     }
 
+    // update drips
+    for (let d of this.drips) {
+      if (d.len < d.maxLen) {
+        canvas.painting.stroke(red(d.col), green(d.col), blue(d.col), map(d.len, 0, d.maxLen, 200, 0));
+        canvas.painting.strokeWeight(random(1, 3));
+        canvas.painting.point(d.x + random(-1, 1), d.y + d.len);
+        d.len += d.speed;
+      }
+    }
 
     screen.image(canvas.painting, 0, 0);
   }
